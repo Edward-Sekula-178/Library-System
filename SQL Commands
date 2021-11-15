@@ -1,0 +1,16 @@
+CREATE DATABASE library;
+
+USE library;
+
+CREATE Table Libusers(PersonID INT(8) AUTO-INCREMENT,
+Forename VARCHAR(20),
+SURNAME VARCHAR(20),
+Perms INT(1)
+Email VARCHAR(20));
+
+CREATE TABLE LoanedBooks(IDP INT(8),
+BookCode VARCHAR(8),
+DueDate DATE,
+ODstatus bit);
+
+CREATE TABLE BookCatalogue(BookID VARC)
