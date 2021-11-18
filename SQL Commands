@@ -2,15 +2,24 @@ CREATE DATABASE library;
 
 USE library;
 
-CREATE Table Libusers(PersonID INT(8) AUTO-INCREMENT,
-Forename VARCHAR(20),
-SURNAME VARCHAR(20),
-Perms INT(1)
-Email VARCHAR(20));
+CREATE Table Libusers(PersonID INT(8) AUTO_INCREMENT,
+Forename VARCHAR(20) NOT NULL,
+Surname VARCHAR(20) NOT NULL,
+Perms INT(1) NOT NULL,
+Email VARCHAR(20),
+Strikes INT(1),
+PRIMARY KEY (PersonID,Surname));
 
-CREATE TABLE LoanedBooks(IDP INT(8),
-BookCode VARCHAR(8),
+CREATE TABLE LoanedBooks(PersonID INT(8),
+BookNo VARCHAR(8),
 DueDate DATE,
-ODstatus bit);
+BookStatus bit);
 
-CREATE TABLE BookCatalogue(BookID VARC)
+CREATE TABLE BookCatalogue(BookID VARC)(
+    BookNo INT(8) AUTO-INCREMENT,
+    Title VARCHAR(20) NOT NULL,
+    ISPN INT(20) NOT NULL,
+    Author VARCHAR(20) NOT NULL,
+    Category VARCHAR(20) NOT NULL
+);
+
