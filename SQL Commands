@@ -15,11 +15,10 @@ BookNo VARCHAR(8),
 DueDate DATE,
 BookStatus bit);
 
-CREATE TABLE BookCatalogue(BookID VARC)(
-    BookNo INT(8) AUTO-INCREMENT,
+CREATE TABLE BookCatalogue(
+    BookNo INT(8) AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(20) NOT NULL,
-    ISPN INT(20) NOT NULL,
+    ISBN INT(20) NOT NULL,
     Author VARCHAR(20) NOT NULL,
-    Category VARCHAR(20) NOT NULL
-);
+    Category VARCHAR(20) NOT NULL);
 
