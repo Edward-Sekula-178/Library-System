@@ -6,6 +6,8 @@ $stmt = $conn->prepare(
 $stmt -> excecute()
 $stmt = $conn->prepare("
     CREATE Table Libusers(PersonID INT(8) AUTO_INCREMENT,
+    Username VARCHAR(20) NOT NULL,
+    Passwd VARCHAR(20) NOT NULL,
     Forename VARCHAR(20) NOT NULL,
     Surname VARCHAR(20) NOT NULL,
     Perms INT(1) NOT NULL,
@@ -27,6 +29,4 @@ $stmt = $conn->prepare("
     Author VARCHAR(20) NOT NULL,
     Category VARCHAR(20) NOT NULL);")
 $stmt -> excecute()
-
-
 $stmt->closeCursor()

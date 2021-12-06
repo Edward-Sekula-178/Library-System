@@ -9,18 +9,19 @@
 </html>
 
 <form action="addusers.php" method = 'post'>
+    Username:<input type = 'text' name = 'Username'><br>
+    Password:<input type = 'text' name = 'Passwd'><br>
     First name:<input type='text' name='forename'><br>
     Last name:<input type="text" name='surname'><br>
-    Password:<input type='text' name='passwd'><br>
-    House<input type='text' name='house'><br>
-    Year<input type='text' name='year'><br>
-    Gender<select name='gender'>
-        <option value='M'>Male</option>
-        <option vale='F'>Female</option>
+    Email:<input type='text' name = 'email'><br>
     </select>
     <br>
-    <input type='radio' name='role' value='pupil' checked>Pupil<br>
-    <input type='radio' name='role' value='Staff' checked>Staff<br>
-    <input type='radio' name='role' value='Admin' checked>Admin<br>
+    <input type='radio' name='role' value='User' checked>User<br>
+    <input type='radio' name='role' value='librarian' checked>librarian<br>
+    <input type='radio' name='role' value='Admin' checked>Mega chad Sexy Librarian<br>
     <input type="submit" value="Add User">
 </form>
+<?php
+include_once('functions.php');
+Newuser('Username','Passwd','forename','surname','role','email');
+?>
