@@ -19,7 +19,7 @@
     <input type='radio' name='role' value='User' checked>User<br>
     <input type='radio' name='role' value='librarian' checked>librarian<br>
     <input type='radio' name='role' value='Admin' checked>Mega chad Sexy Librarian<br>
-    <input type="submit" value="Add User">
+    <input type="submit" value="Add User" href="login.php">
 </form>
 <?php
 include_once('functions.php');
