@@ -1,35 +1,37 @@
 <?php
 
 function login($user,$pass){
+    echo($user);
     include_once ('connection.php');
-    $logindata = $conn->prepare ("SELECT * FROM libusers WHERE username=:user ;");
-    $logindata->bindValue(":user",$user);
+    $logindata = $conn->prepare ("SELECT * FROM Libusers WHERE username=:user ;");
+    $logindata->bindParam(":user",$user);
     $logindata->execute();
-    while ($row = $logindata->fetch(PDO::FETCH_ASSOC)){
-        if (''==$row['Username']){
-            echo('username not recognised');
+    if($logindata->rowCount()==0){
+            $_SESSION['message']=('username not recognised');
             header('location: login.php');}
-        else{
+    else{
+        while ($row = $logindata->fetch(PDO::FETCH_ASSOC)){
+            echo('hi');
             if(password_verify($pass,$row['Password'])){
                 echo('login successful');
                 header('Location: portal.php');}
             else{
-                echo('login failed');
+                $_SESSION['message']=('login failed');
                 header('Location: login.php');}
-            }}
+        }}
     $conn=null;
 }
 
-function Newuser($Username,$Passwd,$Forename,$Surname,$Email,$Perms){
+function Newuser($username,$passwd,$forename,$surname,$email,$Perms){
     include_once('connection.php');
-    $newuser = $conn->prepare("INSERT INTO Libusers (Username, Passwd, Forename, Surname, Perms, Email)
+    $newuser = $conn->prepare("INSERT INTO Libusers (username, passwd, forename, surname, Perms, email)
     VALUES (:username,:pass,:forename, :surname, :perms, :email);");
-    $newuser->bindValue(':username',$Username);
-    $newuser->bindValue(':pass',$Passwd);
-    $newuser->bindValue(':forename',$Forename);
-    $newuser->bindValue(':surname',$Surname);
-    $newuser->bindValue(':perms',$Perms);
-    $newuser->bindValue(':email',$Email);
+    $newuser->bindParam(':username',$username);
+    $newuser->bindParam(':pass',$passwd);
+    $newuser->bindParam(':forename',$forename);
+    $newuser->bindParam(':surname',$surname);
+    $newuser->bindParam(':perms',$Perms);
+    $newuser->bindParam(':email',$email);
     $newuser-> execute();
     $newuser-> closeCursor();
 
@@ -49,13 +51,13 @@ function DBinstall($confirmation,$testdata){
 
             CREATE Table Libusers(
                 PersonID INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                Username VARCHAR(20) NOT NULL,
-                Passwd VARCHAR(20) NOT NULL,
-                Forename VARCHAR(20) NOT NULL,
-                Surname VARCHAR(20) NOT NULL,
-                Perms INT(1) NOT NULL,
-                Email VARCHAR(20),
-                Strikes INT(1));
+                username VARCHAR(20) NOT NULL,
+                passwd VARCHAR(20) NOT NULL,
+                forename VARCHAR(20) NOT NULL,
+                surname VARCHAR(20) NOT NULL,
+                perms INT(1) NOT NULL,
+                email VARCHAR(20),
+                strikes INT(1));
 
             CREATE TABLE LoanedBooks(
                 PersonID INT(8),
@@ -65,11 +67,11 @@ function DBinstall($confirmation,$testdata){
 
             CREATE TABLE BookCatalogue(
                 BookNo INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                Title VARCHAR(20) NOT NULL,
-                ISBN INT(20) NOT NULL,
-                Author VARCHAR(20) NOT NULL,
+                title VARCHAR(20) NOT NULL,
+                ISBN VARCHAR(13) NOT NULL,
+                author VARCHAR(20) NOT NULL,
                 Copies INT(2),
-                Category INT(2) NOT NULL);
+                category INT(2) NOT NULL);
             
             CREATE TABLE categorycode(
                 categoryNo INT(2) UNSIGNED PRIMARY KEY,
@@ -80,21 +82,30 @@ function DBinstall($confirmation,$testdata){
         echo("database initialised successfully");
             }
         if ($testdata=='true'){
-            $userdata=  "INSERT INTO Libusers   (Username,Passwd,Forename,Surname,perms,Email,Strikes)
-                                VALUES          ('David123','1234','David','Lees',1,'davidlees@gmail.com',0),
-                                                ('Sneed178','1234','Ned','Sekula',3,'sneed178@gmail.com',0)
-                                                ('Librarian','1234','libby','Ravenhill',2,'libby@gmail.com',0)";
-            $bookdata = "INSERT INTO BookCatalogue  (Title,ISBN,Author,Category)
-                        VALUES                      ('Foundation',9780008117498,'Asimov',1)
-                                                    ('Foundation and Empire',9780345309006,'Asimov',1)";
+            $userdata=  "INSERT INTO Libusers   (username,passwd,forename,surname,perms,email,strikes)
+                                VALUES          ('david123','1234','David','Lees',1,'davidlees@gmail.com',0),
+                                                ('sneed178','1234','Ned','Sekula',3,'sneed178@gmail.com',0)
+                                                ('librarian','1234','libby','Ravenhill',2,'libby@gmail.com',0)";
+            $bookdata = "INSERT INTO BookCatalogue  (title,ISBN,author,category,imgpath)
+                        VALUES                      ('foundation','9780008117498','Asimov',1,)
+                                                    ('second foundation','9780008117498','Asimov',1)
+                                                    ('foundation and empire','9780345309006','Asimov',1)";
             $category = "INSERT INTO categorycode   (categoryNo., categoryName)
-                                        VALUES      (1,'SCI-FI')";
-
-            
+                                        VALUES      (1,'scifi')";
+            $userdata->execute()
+            $bookdata->execute()
+            $catagory->execute()
             echo("Database reebooted succesfully. Testdata has been added.");
         }
     else{
         echo("Confirmation not recieved.");
     }
     $conn=null;}
+
+function search($keyphrase,$kptype){
+    include_once('connection.php');
+    $keyphrase .= '%';
+    $search = $conn->prepare('SELECT * FROM BookCatalogue WHERE :kptype like :keyphrase');
+    $search->bindParam(':kptype',$kptype);
+    $search->bindParam(':keyphrase',$keyphrase);
 ?>

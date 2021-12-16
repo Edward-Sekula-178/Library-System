@@ -1,10 +1,11 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Login</title>
 </head>
 <body>
-
+<?php echo($_SESSION['message']); ?>
 <form action="loginbridge.php" method="POST">
     User name:<input type="text" name="user"><br>
     Password:<input type="text" name="pass"><br>
