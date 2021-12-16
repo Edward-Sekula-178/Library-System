@@ -12,7 +12,6 @@ try{
     PDO::ATTR_EMULATE_PREPARES, false
      ];
     $conn=new PDO("mysql:host=$servername;dbname=$dbname", $username, $pass, $opts);
-    echo "Connected successfully";
     }
 catch(PDOExeption $e)
     {

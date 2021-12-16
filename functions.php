@@ -2,26 +2,38 @@
 
 function login($user,$pass){
     include_once ('connection.php');
-    $logindata = $conn->prepare ("SELECT * FROM libusers WHERE username=$user ;");
-    #$logindata->blindParam(":username",$user);
-    $logindata->excecute();
-    while ($row = $logindata->fetch(PDO::FETCH_ASSOC))
-    { 
-        if($row['Password']==$pass){
-            header('Location: users.php');}
+    $logindata = $conn->prepare ("SELECT * FROM libusers WHERE username=:user ;");
+    $logindata->bindValue(":user",$user);
+    $logindata->execute();
+    while ($row = $logindata->fetch(PDO::FETCH_ASSOC)){
+        if (''==$row['Username']){
+            echo('username not recognised');
+            header('location: login.php');}
         else{
-            echo('login failed');
-            header('Location: login.php');}
-    }
+            if(password_verify($pass,$row['Password'])){
+                echo('login successful');
+                header('Location: portal.php');}
+            else{
+                echo('login failed');
+                header('Location: login.php');}
+            }}
     $conn=null;
 }
 
-function Newuser($Username,$Passwd,$Forename,$Surname,$Perms,$Email){
+function Newuser($Username,$Passwd,$Forename,$Surname,$Email,$Perms){
     include_once('connection.php');
-    $stmt = $conn->prepare("INSERT INTO Libusers (Username, Passwd, Forename, Surname, Perms, Email)
-    VALUES ($Username,$Passwd,$Forename, $Surname, $Perms, $Email);");
-    $stmt-> execute();
-    $stmt-> closeCursor();
+    $newuser = $conn->prepare("INSERT INTO Libusers (Username, Passwd, Forename, Surname, Perms, Email)
+    VALUES (:username,:pass,:forename, :surname, :perms, :email);");
+    $newuser->bindValue(':username',$Username);
+    $newuser->bindValue(':pass',$Passwd);
+    $newuser->bindValue(':forename',$Forename);
+    $newuser->bindValue(':surname',$Surname);
+    $newuser->bindValue(':perms',$Perms);
+    $newuser->bindValue(':email',$Email);
+    $newuser-> execute();
+    $newuser-> closeCursor();
+
+    echo('new user proflie created successfully');
     $conn=null;
 }
 
