@@ -1,8 +1,7 @@
 <?php
-
 function login($user,$pass){
     echo($user);
-    include_once ('connection.php');
+    include_once('connection.php');
     $logindata = $conn->prepare ("SELECT * FROM Libusers WHERE username=:user ;");
     $logindata->bindParam(":user",$user);
     $logindata->execute();
@@ -46,7 +45,7 @@ function DBinstall($confirmation,$testdata){
         $Initialisation = $conn->prepare("
             DROP TABLE IF EXISTS Libusers;
             DROP TABLE IF EXISTS LoanedBooks;
-            DROP TABLE IF EXISTS BookCatalogue;
+            DROP TABLE IF EXISTS bookcatalogue;
             DROP TABLE IF EXISTS categorycode;
 
             CREATE Table Libusers(
@@ -65,8 +64,8 @@ function DBinstall($confirmation,$testdata){
                 DueDate DATE,
                 BookStatus bit);
 
-            CREATE TABLE BookCatalogue(
-                BookNo INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            CREATE TABLE bookcatalogue(
+                bookno INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(20) NOT NULL,
                 ISBN VARCHAR(13) NOT NULL,
                 author VARCHAR(20) NOT NULL,
@@ -82,19 +81,19 @@ function DBinstall($confirmation,$testdata){
         echo("database initialised successfully");
             }
         if ($testdata=='true'){
-            $userdata=  "INSERT INTO Libusers   (username,passwd,forename,surname,perms,email,strikes)
+            $userdata= $conn->prepare ("INSERT INTO Libusers   (username,passwd,forename,surname,perms,email,strikes)
                                 VALUES          ('david123','1234','David','Lees',1,'davidlees@gmail.com',0),
                                                 ('sneed178','1234','Ned','Sekula',3,'sneed178@gmail.com',0)
-                                                ('librarian','1234','libby','Ravenhill',2,'libby@gmail.com',0)";
-            $bookdata = "INSERT INTO BookCatalogue  (title,ISBN,author,category,imgpath)
-                        VALUES                      ('foundation','9780008117498','Asimov',1,)
+                                                ('librarian','1234','libby','Ravenhill',2,'libby@gmail.com',0)");
+            $bookdata = $conn->prepare("INSERT INTO bookcatalogue  (title,ISBN,author,category)
+                        VALUES                      ('foundation','9780008117498','Asimov',1)
                                                     ('second foundation','9780008117498','Asimov',1)
-                                                    ('foundation and empire','9780345309006','Asimov',1)";
-            $category = "INSERT INTO categorycode   (categoryNo., categoryName)
-                                        VALUES      (1,'scifi')";
-            $userdata->execute()
-            $bookdata->execute()
-            $catagory->execute()
+                                                    ('foundation and empire','9780345309006','Asimov',1)");
+            $category =$conn->prepare ("INSERT INTO categorycode   (categoryNo., categoryName)
+                                        VALUES      (1,'scifi')");
+            $userdata->execute();
+            $bookdata->execute();
+            $catagory->execute();
             echo("Database reebooted succesfully. Testdata has been added.");
         }
     else{
@@ -105,7 +104,34 @@ function DBinstall($confirmation,$testdata){
 function search($keyphrase,$kptype){
     include_once('connection.php');
     $keyphrase .= '%';
-    $search = $conn->prepare('SELECT * FROM BookCatalogue WHERE :kptype like :keyphrase');
+    $search = $conn->prepare('SELECT * FROM bookcatalogue WHERE :kptype like :keyphrase');
     $search->bindParam(':kptype',$kptype);
     $search->bindParam(':keyphrase',$keyphrase);
+    $conn=null;
+}
+
+function countrows(){
+    include_once('connection.php');
+    $countrows = $conn->prepare('SELECT COUNT(*) FROM BookCatalogue');
+    $_SESSION['totalcount']=$countrows->execute();
+    echo($_SESSION['totalcount']);
+    if ($_SESSION['totalcount']>=30){
+        $_SESSION['limit']=$_SESSION['totalcount'];
+    }
+    else{
+    $_SESSION['limit']='30';
+    }
+$conn=null;
+}
+
+function findtitle($countvar){
+    include_once('connection.php');
+    $fetchcommand = $conn->prepare("SELECT title FROM bookcatalogue WHERE bookno=$countvar");
+    #$fetchcommand->bindValue(':countvar',$countvar);
+    $output=$fetchcommand->execute();
+    return($output);
+}
+function findimg($imgtitle){
+    return($_SESSION['imgsrcpath'].$imgtitle);
+}
 ?>

@@ -1,8 +1,7 @@
-<?php session_start();
-include_once('connection.php');
-$countrows=('SELECT COUNT(*) FROM BookCatalogue');
-$_SESSION['count']=$countrows->excecute();
-$_SESSION['limit']='30';
+<?php
+session_start();
+include_once('functions.php');
+countrows();
 ?>
 
 
@@ -14,7 +13,7 @@ $_SESSION['limit']='30';
     <div class="sidenav">
         <form action='searchbridge.php' method='POST'>
             <input type='radio' name='category' value='null' checked>No category<br>
-            <input type='radio' name='category' value='SCIFI' checked>Sci-Fi<br>
+            <input type='radio' name='category' value='SCIFI' >Sci-Fi<br>
             <input type='submit' value='apply'>
         </form>
 </div>
@@ -28,24 +27,25 @@ $_SESSION['limit']='30';
             <input type='submit' value='Apply'>
         </form>
     </header>
-    <?php   
+    <?php
+        $title=null;
+        $pathvar=null;
         $element = "<div class='container'>
-                    <img src='https://cdn-images-1.medium.com/max/174/0*Pc5OQpBHX0bzFPZ0.'class='coverobject' >
-                    <p>foundation and earth</p>
+                    <img src=$pathvar class='coverobject' >
+                    <a href=bookpage.php>$title</a>
                     </div>
                     ";
     $count = $_SESSION['limit'];
     foreach( range(1,$count) as $item){
+        include_once('functions.php');
+        $imgtitle=findtitle($item);
+        $pathvar=findimg($imgtitle);
+        echo $pathvar;
         echo $element;
     }
+    #echo "<img src='".$row['photo']."' />";
     ?>
 </main class = 'main'>
 
 </html>
 
-function loadimg($title){
-    
-    $imgpath='C:\xampp\htdocs\Library-System\Images';
-    header('Content-Type: image/jpeg');
-    readfile($img);
-}
