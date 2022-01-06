@@ -94,6 +94,11 @@ function DBinstall($confirmation,$testdata){
             $userdata->execute();
             $bookdata->execute();
             $catagory->execute();
+            
+            $userdata->closeCursor();
+            $bookdata->closeCursor();
+            $catagory->closeCursor();
+
             echo("Database reebooted succesfully. Testdata has been added.");
         }
     else{
@@ -125,10 +130,11 @@ $conn=null;
 }
 
 function findtitle($countvar){
-    include_once('connection.php');
-    $fetchcommand = $conn->prepare("SELECT title FROM bookcatalogue WHERE bookno=$countvar");
-    #$fetchcommand->bindValue(':countvar',$countvar);
+    
+    $fetchcommand = $conn->prepare("SELECT title FROM bookcatalogue WHERE bookno=:countvar");
+    $fetchcommand->bindValue(':countvar',$countvar);
     $output=$fetchcommand->execute();
+    echo($output);
     return($output);
 }
 function findimg($imgtitle){

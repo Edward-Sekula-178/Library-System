@@ -31,15 +31,16 @@ countrows();
         $title=null;
         $pathvar=null;
         $element = "<div class='container'>
-                    <img src=$pathvar class='coverobject' >
+                    
                     <a href=bookpage.php>$title</a>
                     </div>
                     ";
-    $count = $_SESSION['limit'];
+                    #<img src=$pathvar class='coverobject'>
+    $count = 50;
     foreach( range(1,$count) as $item){
         include_once('functions.php');
         $imgtitle=findtitle($item);
-        $pathvar=findimg($imgtitle);
+        #$pathvar=findimg($imgtitle);
         echo $pathvar;
         echo $element;
     }
