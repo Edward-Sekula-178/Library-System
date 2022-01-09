@@ -41,7 +41,7 @@ function Newuser($username,$passwd,$forename,$surname,$email,$Perms){
 
 function DBinstall($confirmation,$testdata){
     include_once('connection.php');
-    if ($confirmation == 'Confirmation'){
+    if ($confirmation == 'confirmation'){
         $Initialisation = $conn->prepare("
             DROP TABLE IF EXISTS Libusers;
             DROP TABLE IF EXISTS LoanedBooks;
@@ -83,17 +83,20 @@ function DBinstall($confirmation,$testdata){
         if ($testdata=='true'){
             $userdata= $conn->prepare ("INSERT INTO Libusers   (username,passwd,forename,surname,perms,email,strikes)
                                 VALUES          ('david123','1234','David','Lees',1,'davidlees@gmail.com',0),
-                                                ('sneed178','1234','Ned','Sekula',3,'sneed178@gmail.com',0)
+                                                ('sneed178','1234','Ned','Sekula',3,'sneed178@gmail.com',0),
                                                 ('librarian','1234','libby','Ravenhill',2,'libby@gmail.com',0)");
             $bookdata = $conn->prepare("INSERT INTO bookcatalogue  (title,ISBN,author,category)
-                        VALUES                      ('foundation','9780008117498','Asimov',1)
-                                                    ('second foundation','9780008117498','Asimov',1)
+                        VALUES                      ('foundation','9780008117498','Asimov',1),
+                                                    ('second foundation','9780008117498','Asimov',1),
                                                     ('foundation and empire','9780345309006','Asimov',1)");
-            $category =$conn->prepare ("INSERT INTO categorycode   (categoryNo., categoryName)
+            $category =$conn->prepare ("INSERT INTO categorycode (categoryNo, categoryName)
                                         VALUES      (1,'scifi')");
             $userdata->execute();
+            $userdata->closeCursor();
             $bookdata->execute();
-            $catagory->execute();
+            $bookdata->closeCursor();
+            $category->execute();
+            $category->closeCursor();
             echo("Database reebooted succesfully. Testdata has been added.");
         }
     else{
@@ -124,14 +127,20 @@ function countrows(){
 $conn=null;
 }
 
-function findtitle($countvar){
+function loadbookdata(){
     include_once('connection.php');
-    $fetchcommand = $conn->prepare("SELECT title FROM bookcatalogue WHERE bookno=$countvar");
-    #$fetchcommand->bindValue(':countvar',$countvar);
+    $fetchcommand = $conn->prepare("SELECT * FROM bookcatalogue");
     $output=$fetchcommand->execute();
+    $fetchcommand-> closeCursor();
     return($output);
 }
 function findimg($imgtitle){
-    return($_SESSION['imgsrcpath'].$imgtitle);
+    $imgpath=($_SESSION['imgsrcpath'].$imgtitle.'.jpg');
+    if (file_exists($imgopath)){}
+    else{
+        $imgpath="C:\xampp\htdocs\Library-System\Images\noimage.jpg";
+    }
+        
+    return$imgpath;
 }
 ?>

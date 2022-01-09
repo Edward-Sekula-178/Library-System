@@ -1,7 +1,9 @@
 <?php
 session_start();
 include_once('functions.php');
-countrows();
+$_SESSION['bookdata']=loadbookdata();
+echo $_SESSION['bookdata'];
+echo count($_SESSION['bookdata']);
 ?>
 
 
@@ -30,16 +32,17 @@ countrows();
     <?php
         $title=null;
         $pathvar=null;
+        $k=null;
         $element = "<div class='container'>
                     <img src=$pathvar class='coverobject' >
-                    <a href=bookpage.php>$title</a>
+                    <form action=bookpage.php value=$k>$title</form>
                     </div>
                     ";
-    $count = $_SESSION['limit'];
-    foreach( range(1,$count) as $item){
+    #$count = $_SESSION['limit'];
+    foreach(range(0,count($_SESSION['bookdata'])) as $k){
         include_once('functions.php');
-        $imgtitle=findtitle($item);
-        $pathvar=findimg($imgtitle);
+        $title=[$k-1][0];
+        $pathvar=findimg($title);
         echo $pathvar;
         echo $element;
     }
