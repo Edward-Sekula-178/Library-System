@@ -31,19 +31,10 @@ countrows();
         $title=null;
         $pathvar=null;
         $element = "<div class='container'>
-                    <img src=$pathvar class='coverobject' >
+                    
                     <a href=bookpage.php>$title</a>
                     </div>
                     ";
-<<<<<<< Updated upstream
-    $count = $_SESSION['limit'];
-    foreach( range(1,$count) as $item){
-        include_once('functions.php');
-        $imgtitle=findtitle($item);
-        $pathvar=findimg($imgtitle);
-        echo $pathvar;
-        echo $element;
-=======
                     #<img src=$pathvar class='coverobject'>
 
 
@@ -63,7 +54,6 @@ try{
 catch(PDOExeption $e)
     {
         echo "Connecin Failed" . $e->getMessage();
->>>>>>> Stashed changes
     }
 $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
 $fetch->execute();

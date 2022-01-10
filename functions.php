@@ -18,7 +18,7 @@ function login($user,$pass){
                 $_SESSION['message']=('login failed');
                 header('Location: login.php');}
         }}
-    $conn=null;
+
 }
 
 function Newuser($username,$passwd,$forename,$surname,$email,$Perms){
@@ -35,7 +35,7 @@ function Newuser($username,$passwd,$forename,$surname,$email,$Perms){
     $newuser-> closeCursor();
 
     echo('new user proflie created successfully');
-    $conn=null;
+
 }
 
 
@@ -85,10 +85,10 @@ function DBinstall($confirmation,$testdata){
                                 VALUES          ('david123','1234','David','Lees',1,'davidlees@gmail.com',0),
                                                 ('sneed178','1234','Ned','Sekula',3,'sneed178@gmail.com',0)
                                                 ('librarian','1234','libby','Ravenhill',2,'libby@gmail.com',0)");
-            $bookdata = $conn->prepare("INSERT INTO bookcatalogue  (title,ISBN,author,category)
-                        VALUES                      ('foundation','9780008117498','Asimov',1)
-                                                    ('second foundation','9780008117498','Asimov',1)
-                                                    ('foundation and empire','9780345309006','Asimov',1)");
+            $bookdata = $conn->prepare("INSERT INTO bookcatalogue  (BookNo,Title,ISBN,Author,Category)
+                        VALUES                      (Null,'foundation','9780008117498','Asimov',1),
+                                                    (Null,'second foundation','9780008117498','Asimov',1),
+                                                    (Null,'foundation and empire','9780345309006','Asimov',1)");
             $category =$conn->prepare ("INSERT INTO categorycode   (categoryNo., categoryName)
                                         VALUES      (1,'scifi')");
             $userdata->execute();
@@ -99,7 +99,7 @@ function DBinstall($confirmation,$testdata){
     else{
         echo("Confirmation not recieved.");
     }
-    $conn=null;}
+}
 
 function search($keyphrase,$kptype){
     include_once('connection.php');
@@ -107,7 +107,7 @@ function search($keyphrase,$kptype){
     $search = $conn->prepare('SELECT * FROM bookcatalogue WHERE :kptype like :keyphrase');
     $search->bindParam(':kptype',$kptype);
     $search->bindParam(':keyphrase',$keyphrase);
-    $conn=null;
+
 }
 
 function countrows(){
@@ -121,15 +121,24 @@ function countrows(){
     else{
     $_SESSION['limit']='30';
     }
-$conn=null;
 }
 
+<<<<<<< Updated upstream
 function findtitle($countvar){
     include_once('connection.php');
     $fetchcommand = $conn->prepare("SELECT title FROM bookcatalogue WHERE bookno=$countvar");
     #$fetchcommand->bindValue(':countvar',$countvar);
     $output=$fetchcommand->execute();
     return($output);
+=======
+function findtitle(){
+    include_once('connection.php');
+    $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
+    $return = $fetch->execute();
+    $fetch->closeCursor();
+    echo $return;
+    return $return;
+>>>>>>> Stashed changes
 }
 function findimg($imgtitle){
     return($_SESSION['imgsrcpath'].$imgtitle);
