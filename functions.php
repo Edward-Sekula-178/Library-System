@@ -123,14 +123,6 @@ function countrows(){
     }
 }
 
-<<<<<<< Updated upstream
-function findtitle($countvar){
-    include_once('connection.php');
-    $fetchcommand = $conn->prepare("SELECT title FROM bookcatalogue WHERE bookno=$countvar");
-    #$fetchcommand->bindValue(':countvar',$countvar);
-    $output=$fetchcommand->execute();
-    return($output);
-=======
 function findtitle(){
     include_once('connection.php');
     $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
@@ -138,7 +130,6 @@ function findtitle(){
     $fetch->closeCursor();
     echo $return;
     return $return;
->>>>>>> Stashed changes
 }
 function findimg($imgtitle){
     return($_SESSION['imgsrcpath'].$imgtitle);

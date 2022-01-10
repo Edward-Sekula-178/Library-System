@@ -1,7 +1,5 @@
 <?php
 session_start();
-include_once('functions.php');
-countrows();
 ?>
 
 
@@ -28,23 +26,7 @@ countrows();
         </form>
     </header>
 <?php
-        $title=null;
-        $pathvar=null;
-        $element = "<div class='container'>
-                    <img src=$pathvar class='coverobject' >
-                    <a href=bookpage.php>$title</a>
-                    </div>
-                    ";
-<<<<<<< Updated upstream
-    $count = $_SESSION['limit'];
-    foreach( range(1,$count) as $item){
-        include_once('functions.php');
-        $imgtitle=findtitle($item);
-        $pathvar=findimg($imgtitle);
-        echo $pathvar;
-        echo $element;
-=======
-                    #<img src=$pathvar class='coverobject'>
+
 
 
 $servername = "localhost";
@@ -63,23 +45,30 @@ try{
 catch(PDOExeption $e)
     {
         echo "Connecin Failed" . $e->getMessage();
->>>>>>> Stashed changes
     }
+
+$title=null;
+$pathvar=null;
+$element = "<button class='container'>
+            <img src=$pathvar class='coverobject'>
+            <form  href=bookpage.php>$title</a>
+            </button>
+            ";
+//fetch data to bee moved into a function soon.
 $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
 $fetch->execute();
 while($row = $fetch->fetch(PDO::FETCH_ASSOC)){
-    $allbooks=array($row['BookNo'],$row['Title'],$row['Author'],$row['Category']);
-    print_r($allbooks) ;}
+    $temp=array($row['BookNo'],$row['Title'],$row['Author'],$row['Category']);}
 $fetch->closeCursor();
-print_r ($return);
-    $count = 50;
-    // foreach( range(1,$count) as $item){
-    //     include_once('functions.php');
-    //     $imgtitle=findtitle($item);
-    //     #$pathvar=findimg($imgtitle);
-    //     echo $pathvar;
-    //     echo $element;
-    // }
+
+//printing of element.
+foreach( range(1,$count) as $item){
+    include_once('functions.php');
+    $imgtitle=findtitle($item);
+    #$pathvar=findimg($imgtitle);
+    echo $pathvar;
+    echo $element;
+}
     #echo "<img src='".$row['photo']."' />";
 ?>
 </main class = 'main'>
