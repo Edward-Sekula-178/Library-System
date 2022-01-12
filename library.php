@@ -58,17 +58,15 @@ $element = "<button class='container'>
 $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
 $fetch->execute();
 while($row = $fetch->fetch(PDO::FETCH_ASSOC)){
-    $temp=array($row['BookNo'],$row['Title'],$row['Author'],$row['Category']);}
+    include_once('functions.php');
+ 
+    $book=array($row['bookno'],$row['title'],$row['author'],$row['category']);
+    print_r($book);
+    $imgsource=imgsource($row['title']);}
 $fetch->closeCursor();
 
-//printing of element.
-foreach( range(1,$count) as $item){
-    include_once('functions.php');
-    $imgtitle=findtitle($item);
+
     #$pathvar=findimg($imgtitle);
-    echo $pathvar;
-    echo $element;
-}
     #echo "<img src='".$row['photo']."' />";
 ?>
 </main class = 'main'>

@@ -123,15 +123,14 @@ function countrows(){
     }
 }
 
-function findtitle(){
-    include_once('connection.php');
-    $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
-    $return = $fetch->execute();
-    $fetch->closeCursor();
-    echo $return;
-    return $return;
-}
-function findimg($imgtitle){
-    return($_SESSION['imgsrcpath'].$imgtitle);
+
+function imgsource($imgtitle){
+    $temppath="C:\\xampp\\htdocs\\Library-System\\Images\\".$imgtitle.".jpg";
+    if(file_exists($temppath)){
+        return $temppath;
+    }
+    else{
+        return("C:\\xampp\\htdocs\\Library-System\\Images\\noimage.jpg");
+    };
 }
 ?>
