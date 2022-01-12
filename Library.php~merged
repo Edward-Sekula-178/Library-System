@@ -1,5 +1,10 @@
 <?php
 session_start();
+<<<<<<< HEAD
+include_once('functions.php');
+countrows();
+=======
+>>>>>>> bc64abc57215ee6344282a2ca04e864e807d0c7d
 ?>
 
 
@@ -8,7 +13,11 @@ session_start();
 <head>
   <link rel="stylesheet" href="styles.css">
 </head>
+<<<<<<< HEAD
+    <div class="sidenav">
+=======
     <div class="">
+>>>>>>> bc64abc57215ee6344282a2ca04e864e807d0c7d
         <form action='searchbridge.php' method='POST'>
             <input type='radio' name='category' value='null' checked>No category<br>
             <input type='radio' name='category' value='SCIFI' >Sci-Fi<br>
@@ -25,6 +34,26 @@ session_start();
             <input type='submit' value='Apply'>
         </form>
     </header>
+<<<<<<< HEAD
+    <?php
+        $title=null;
+        $pathvar=null;
+        $element = "<div class='container'>
+                    <img src=$pathvar class='coverobject' >
+                    <a href=bookpage.php>$title</a>
+                    </div>
+                    ";
+    $count = $_SESSION['limit'];
+    foreach( range(1,$count) as $item){
+        include_once('functions.php');
+        $imgtitle=findtitle($item);
+        $pathvar=findimg($imgtitle);
+        echo $pathvar;
+        echo $element;
+    }
+    #echo "<img src='".$row['photo']."' />";
+    ?>
+=======
 <?php
 
 
@@ -58,17 +87,20 @@ $element = "<button class='container'>
 $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
 $fetch->execute();
 while($row = $fetch->fetch(PDO::FETCH_ASSOC)){
-    include_once('functions.php');
- 
-    $book=array($row['bookno'],$row['title'],$row['author'],$row['category']);
-    print_r($book);
-    $imgsource=imgsource($row['title']);}
+    $temp=array($row['BookNo'],$row['Title'],$row['Author'],$row['Category']);}
 $fetch->closeCursor();
 
-
+//printing of element.
+foreach( range(1,$count) as $item){
+    include_once('functions.php');
+    $imgtitle=findtitle($item);
     #$pathvar=findimg($imgtitle);
+    echo $pathvar;
+    echo $element;
+}
     #echo "<img src='".$row['photo']."' />";
 ?>
+>>>>>>> bc64abc57215ee6344282a2ca04e864e807d0c7d
 </main class = 'main'>
 
 </html>

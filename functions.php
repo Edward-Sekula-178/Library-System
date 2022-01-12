@@ -18,7 +18,7 @@ function login($user,$pass){
                 $_SESSION['message']=('login failed');
                 header('Location: login.php');}
         }}
-    $conn=null;
+
 }
 
 function Newuser($username,$passwd,$forename,$surname,$email,$Perms){
@@ -35,7 +35,7 @@ function Newuser($username,$passwd,$forename,$surname,$email,$Perms){
     $newuser-> closeCursor();
 
     echo('new user proflie created successfully');
-    $conn=null;
+
 }
 
 
@@ -102,7 +102,7 @@ function DBinstall($confirmation,$testdata){
     else{
         echo("Confirmation not recieved.");
     }
-    $conn=null;}
+}
 
 function search($keyphrase,$kptype){
     include_once('connection.php');
@@ -110,7 +110,7 @@ function search($keyphrase,$kptype){
     $search = $conn->prepare('SELECT * FROM bookcatalogue WHERE :kptype like :keyphrase');
     $search->bindParam(':kptype',$kptype);
     $search->bindParam(':keyphrase',$keyphrase);
-    $conn=null;
+
 }
 
 function countrows(){
@@ -124,23 +124,16 @@ function countrows(){
     else{
     $_SESSION['limit']='30';
     }
-$conn=null;
 }
 
-function loadbookdata(){
-    include_once('connection.php');
-    $fetchcommand = $conn->prepare("SELECT * FROM bookcatalogue");
-    $output=$fetchcommand->execute();
-    $fetchcommand-> closeCursor();
-    return($output);
-}
-function findimg($imgtitle){
-    $imgpath=($_SESSION['imgsrcpath'].$imgtitle.'.jpg');
-    if (file_exists($imgopath)){}
-    else{
-        $imgpath="C:\xampp\htdocs\Library-System\Images\noimage.jpg";
+
+function imgsource($imgtitle){
+    $temppath="C:\\xampp\\htdocs\\Library-System\\Images\\".$imgtitle.".jpg";
+    if(file_exists($temppath)){
+        return $temppath;
     }
-        
-    return$imgpath;
+    else{
+        return("C:\\xampp\\htdocs\\Library-System\\Images\\noimage.jpg");
+    };
 }
 ?>
