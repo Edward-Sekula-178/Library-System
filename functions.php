@@ -128,12 +128,12 @@ function countrows(){
 
 
 function imgsource($imgtitle){
-    $temppath="C:\\xampp\\htdocs\\Library-System\\Images\\".$imgtitle.".jpg";
+    $temppath="images\\".$imgtitle.".jpg";
     if(file_exists($temppath)){
         return $temppath;
     }
     else{
-        return("C:\\xampp\\htdocs\\Library-System\\Images\\noimage.jpg");
+        return("images\\noimage.jpg");
     };
 }
 ?>

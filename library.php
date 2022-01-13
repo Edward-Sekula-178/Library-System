@@ -1,5 +1,6 @@
 <?php
 session_start();
+$imgsource='images\\foundation.jpg';
 ?>
 
 
@@ -27,8 +28,6 @@ session_start();
     </header>
 <?php
 
-
-
 $servername = "localhost";
 $username = "root";
 $pass = "";
@@ -47,22 +46,46 @@ catch(PDOExeption $e)
         echo "Connecin Failed" . $e->getMessage();
     }
 
-$title=null;
-$pathvar=null;
-$element = "<button class='container'>
-            <img src=$pathvar class='coverobject'>
-            <form  href=bookpage.php>$title</a>
-            </button>
-            ";
+class book_object{
+    public $title;
+    public $imgpath;
+    public $value;
+    
+    function set_vars($title,$imgpath,$value){
+        $this->title =$title;
+        $this->imgpath =$imgpath;
+        $this->value=$value;
+        echo $this->$title;
+    }
+
+    function output_book(){
+        $imgpathtoelement= $this->$imgpath;
+        $valuetoelement=$this->$value;
+        $titletoelement=$this->$title;
+
+        $element= "<div class='container'>
+        <img src='<?php echo $imgpathtoelement; ?>' class='coverobject'>
+        <form action='bookpage.php' method='POST' value=<?$valuetoelement;?> ><? echo $titletoelement;?></a>
+        </div>
+        ";
+        echo $element;
+    }
+
+}
+
 //fetch data to bee moved into a function soon.
 $fetch = $conn->prepare('SELECT * FROM bookcatalogue');
 $fetch->execute();
 while($row = $fetch->fetch(PDO::FETCH_ASSOC)){
     include_once('functions.php');
- 
     $book=array($row['bookno'],$row['title'],$row['author'],$row['category']);
-    print_r($book);
-    $imgsource=imgsource($row['title']);}
+    $booktitle = $row['title'];
+    $imgsource=imgsource($booktitle);
+
+    $$booktitle = new book_object();
+    $$booktitle->set_vars($row['title'],$imgsource,$row['bookno']);
+    $$booktitle->output_book();
+    }
 $fetch->closeCursor();
 
 
