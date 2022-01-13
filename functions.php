@@ -128,6 +128,7 @@ function countrows(){
 
 
 function imgsource($imgtitle){
+    $imgtitle = str_replace(' ','-',$imgtitle);
     $temppath="images\\".$imgtitle.".jpg";
     if(file_exists($temppath)){
         return $temppath;
