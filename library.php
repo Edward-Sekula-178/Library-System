@@ -1,6 +1,14 @@
 <?php
 session_start();
+<<<<<<< Updated upstream
 $imgsource='images\\foundation.jpg';
+=======
+include_once('functions.php');
+$_SESSION['bookdata']=loadbookdata();
+echo $_SESSION['bookdata'];
+echo $_SESSION['bookdata'];
+echo count($_SESSION['bookdata']);
+>>>>>>> Stashed changes
 ?>
 
 

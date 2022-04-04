@@ -126,12 +126,37 @@ function countrows(){
     }
 }
 
+<<<<<<< Updated upstream
 
 function imgsource($imgtitle){
     $imgtitle = str_replace(' ','-',$imgtitle);
     $temppath="images\\".$imgtitle.".jpg";
     if(file_exists($temppath)){
         return $temppath;
+=======
+function loadbookdata(){
+    include_once('connection.php');
+    $fetchcommand = $conn->prepare("SELECT * FROM bookcatalogue");
+    $result=$fetchcommand->execute();
+
+    $output=[];
+    if ($result->num_rows > 0){
+        while ($row=$result-> fetch_assoc()){
+            $temp=array();
+            echo $temp;
+        }
+    }
+    }
+    echo $output;
+    $fetchcommand-> closeCursor();
+    return($output);
+}
+function findimg($imgtitle){
+    $imgpath=($_SESSION['imgsrcpath'].$imgtitle.'.jpg');
+    if (file_exists($imgopath)){}
+    else{
+        $imgpath="C:\xampp\htdocs\Library-System\Images\noimage.jpg";
+>>>>>>> Stashed changes
     }
     else{
         return("images\\noimage.jpg");
